@@ -1,0 +1,7 @@
+{
+    "env": {
+        "MONGO_USER":"den4ik",
+        "MONGO_PASSWORD":"SJCvV0olNr9CAxaf",
+        "MONGO_DB":"phonebook-react-dev"
+    }
+}
