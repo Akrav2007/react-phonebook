@@ -4,6 +4,7 @@ const { graphqlHTTP } = require('express-graphql');
 const mongoose = require('mongoose');
 const { buildSchema } = require('graphql');
 const Contact = require('./models/contact');
+require ('dotenv').config()
 
 const app = express();
 
