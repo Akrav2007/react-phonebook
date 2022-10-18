@@ -1,0 +1,53 @@
+.phonebook {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  margin: 0 auto;
+
+  padding: 2rem 0;
+  box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.7);
+  border-radius:5px ;
+}
+.phonebook h2 {
+  text-align: center;
+}
+
+.phonebook section{
+  
+  display: flex;
+  
+  justify-content: space-between;
+  align-items: center;
+}
+.phonebook section,p{
+  padding: 0.5rem;
+}
+
+.phonebook section input{
+  justify-self:left;
+  height: 5vh;
+}
+
+.phonebook section input[type=search]{
+  
+  padding: 0.5rem;
+  border-radius:5px ;
+  outline: 0;
+  height: 1rem;
+  
+}
+.phonebook section input::placeholder{
+  padding:  .5rem;
+ 
+}
+.phonebook .icons i{
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+ 
+
+
+  

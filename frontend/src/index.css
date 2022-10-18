@@ -1,0 +1,29 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  text-decoration: none;
+}
+
+@import-normalize; /* bring in normalize.css styles */
+/* @import 'normalize.css'; */
+.app{
+  
+  min-height: 100vh;
+  width: min(650px,1200px);
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.app h1,h2,footer {
+  text-align: center;
+ padding: 2rem;
+}
+main{
+  flex:1;
+}
+footer{
+  font-size: 1.5rem;
+}
