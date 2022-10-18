@@ -40,9 +40,9 @@ const Form = ({
           <section>
             <label htmlFor=''>Phone*: </label>
             <input
-              type='number'
+              type='text'
               name='phone'
-              pattern='[0-9]{3}-\d{7}'
+             
               placeholder='example: 054-1234567'
               title='example: 054-1234567'
             required
