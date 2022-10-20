@@ -4,7 +4,7 @@ const { graphqlHTTP } = require('express-graphql');
 const mongoose = require('mongoose');
 const { buildSchema } = require('graphql');
 const Contact = require('./models/contact');
-require ('dotenv').config()
+require('dotenv').config();
 
 const app = express();
 
@@ -18,8 +18,6 @@ app.use((req, res, next) => {
     return res.sendStatus(200);
   }
   next();
-  
-
 });
 
 app.use(
@@ -49,7 +47,9 @@ app.use(
     }
     
     type RootMutation{
-        createContact(contactInput:ContactInput):Contact
+        createContact(contactInput:ContactInput):Contact!
+        editContact(id:ID!,contactInput:ContactInput):Contact!
+        deleteContact(id:ID!):Boolean
     }
     
     schema{
@@ -59,18 +59,18 @@ app.use(
     
     `),
     rootValue: {
-      contacts: () => {
-       return Contact.find()
-          .then(contacts => {
-            return contacts.map(contact => {
-              return { ...contact._doc,_id:contact.id};
-            });
-          })
-          .catch((error) => {
-            console.log(error);
+      contacts: async () => {
+        try {
+          const contacts = await Contact.find();
+          return contacts.map((contact) => {
+            return { ...contact._doc, _id: contact.id };
           });
+        } catch (error) {
+          console.log(error);
+        }
       },
-      createContact: (args) => {
+
+      createContact: async (args) => {
         const contact = new Contact({
           name: args.contactInput.name,
           email: args.contactInput.email,
@@ -78,16 +78,32 @@ app.use(
           description: args.contactInput.description,
           image: args.contactInput.image,
         });
-        return contact
-          .save()
-          .then((result) => {
-            console.log(result);
-            return { ...result._doc,_id:result._doc._id.toString()};
-          })
-          .catch((error) => {
-            console.log(error);
-            throw err;
-          });
+        try {
+          const result = await contact.save();
+          console.log(result);
+          return { ...result._doc, _id: result._doc._id.toString() };
+        } catch (error) {
+          
+          throw err;
+        }
+      },
+      editContact: async function ({ id, contactInput }) {
+        const contact = await Contact.findById(id);
+        contact.name = contactInput.name;
+        contact.phone = contactInput.phone;
+        contact.email = contactInput.email;
+        contact.description = contactInput.description;
+        contact.image = contactInput.image;
+        console.log(contact);
+        const updatedContact = await contact.save();
+        return {
+          ...updatedContact._doc,
+          _id: updatedContact._id.toString(),
+        };
+      },
+      deleteContact: async function ({ id }) {
+        await Contact.findByIdAndRemove(id);
+        return true;
       },
     },
     graphiql: true,
