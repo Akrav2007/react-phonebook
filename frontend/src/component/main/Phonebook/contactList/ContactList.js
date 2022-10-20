@@ -20,7 +20,7 @@ const ContactList = ({
   .map((val) => (
     <Contact
       val={val}
-      key={val.id}
+      key={val._id}
       editHandler={editHandler}
       deleteContact={deleteContact}
     />

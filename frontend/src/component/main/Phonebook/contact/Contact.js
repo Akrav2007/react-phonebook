@@ -40,11 +40,11 @@ const Contact = ({ val, deleteContact, editHandler }) => {
       </section>
 
       <section style={{ alignSelf: 'center' }}>
-        <i onClick={() => editHandler(val.id)}>
+        <i onClick={() => editHandler(val._id)}>
           <MdModeEdit />
         </i>
 
-        <i onClick={() => deleteContact(val.id)}>
+        <i onClick={() => deleteContact(val._id)}>
           <FaRegTrashAlt />
         </i>
         <i onClick={openPopup}>

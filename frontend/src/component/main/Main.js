@@ -32,6 +32,7 @@ const Main = () => {
 
   const [showForm, setShowForm] = useState(false);
   const [ifEdit, setIfEdit] = useState(true);
+  const[ediContactId,setEditContactId]=useState('')
   const [nameIsValid, setNameIsValid] = useState(false);
   const [phoneIsValid, setPhoneIsvalid] = useState(false);
   useEffect(() => {
@@ -94,7 +95,8 @@ const Main = () => {
       setPhoneIsvalid(false);
     }
     /********************************* */
-    const requestBody = {
+    let requestBody={};
+    requestBody = {
       query: `
           mutation {
             createContact(contactInput: {name: "${values.name}", description: "${values.description}", phone: "${values.phone}", email: "${values.email}",image:"${values.image}"}) {
@@ -108,7 +110,26 @@ const Main = () => {
           }
         `,
     };
+    if(!ifEdit){
+      requestBody = {
+        query: `
+            mutation {
+              editContact(id:"${ediContactId}",contactInput: {name: "${values.name}", description: "${values.description}", phone: "${values.phone}", email: "${values.email}",image:"${values.image}"}) {
+                _id
+                name
+                description
+                phone
+                image
+               
+              }
+            }
+          `,
+      };
+      setIfEdit(true);
+    }
 
+    
+ 
     fetch('http://localhost:8000/graphql',{
       method:'POST',
       body:JSON.stringify(requestBody),
@@ -119,6 +140,7 @@ const Main = () => {
     .then(result=>{
       return result.json()
     }).then(resData=>{
+      
       fetchContacts();
     })
     .catch(err=>{
@@ -154,8 +176,33 @@ const Main = () => {
   );
   //delete contact from the book by id
   const deleteContact = (id) => {
-    const deleteUser = contacts.filter((el) => el.id !== id);
+    const deleteUser = contacts.filter((el) => el._id !== id);
     setContacts(deleteUser);
+    const requestBody = {
+      query: `
+          mutation {
+            deleteContact(id:"${id}") 
+              }
+        `
+    };
+
+    fetch('http://localhost:8000/graphql',{
+      method:'POST',
+      body:JSON.stringify(requestBody),
+      headers:{
+        'Content-Type':'application/json'
+      }
+    })
+    .then(result=>{
+      return result.json()
+    }).then(resData=>{
+      
+      console.log(resData)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+
   };
   /*DELETE ALL CONTACTS FROM THE LIST*/
   const deleteAllContacts = () => {
@@ -164,9 +211,10 @@ const Main = () => {
 
   const editHandler = (id) => {
     setShowForm(true);
+    setEditContactId(id);
 
     let editContact = contacts.find((el) => {
-      return el.id === id;
+      return el._id === id;
     });
 
     setValue(editContact);
@@ -204,6 +252,7 @@ const fetchContacts=()=>{
   .then((resData) => {
     if (resData) {
       const contacts=resData.data.contacts;
+      console.log(contacts)
       setContacts(contacts)
     }
   })

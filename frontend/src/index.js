@@ -3,7 +3,7 @@
  *****************************************/
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 // import our css
 import './index.css'; // must be ./ or relative path
@@ -15,6 +15,11 @@ import App from './App'
  *****************************************/
 
 // '/' at the end of the component is a must!
-ReactDOM.render(
-<React.StrictMode><App  /></React.StrictMode>
-, document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    
+    <App />
+    
+  </React.StrictMode>
+);
